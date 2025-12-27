@@ -26,6 +26,7 @@ df = pd.read_csv("face_data.csv")
 
 # Get labels
 labels = df["target"]
-pixels = df.drop(["target"])
+pixels = df.drop(["target"], axis=1)
+
 
 ## Split dataset into trainign and testing------------
