@@ -30,3 +30,11 @@ pixels = df.drop(["target"], axis=1)
 
 
 ## Split dataset into trainign and testing------------
+x_train, x_test, y_train, y_test = train_test_split(pixels, labels)
+
+## PCA -----------
+pca = PCA(n_components=200).fit(x_train)
+plt.plot(np.cumsum(pca.explained_variance_ratio_))          # cumsum = cumulative sum. shows us how much variance we are capturing as we add more n_components
+plt.show()
+
+# Upon testing, 135 cases / n_components needed for 96.5% of the data.
