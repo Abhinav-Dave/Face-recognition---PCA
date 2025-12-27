@@ -33,8 +33,26 @@ pixels = df.drop(["target"], axis=1)
 x_train, x_test, y_train, y_test = train_test_split(pixels, labels)
 
 ## PCA -----------
-pca = PCA(n_components=200).fit(x_train)
-plt.plot(np.cumsum(pca.explained_variance_ratio_))          # cumsum = cumulative sum. shows us how much variance we are capturing as we add more n_components
-plt.show()
+
+# TEST OUT ALL FIRST
+# pca = PCA(n_components=200).fit(x_train)
+# plt.plot(np.cumsum(pca.explained_variance_ratio_))          # cumsum = cumulative sum. shows us how much variance we are capturing as we add more n_components
+# plt.show()
 
 # Upon testing, 135 cases / n_components needed for 96.5% of the data.
+pca = PCA(n_components=135).fit(x_train)
+
+## PROJECT/TRANFORM training data onto pca------------
+x_train_pca = pca.transform(x_train)
+
+## SET CLASSIFIER and fit training data
+clf = SVC(kernel='rbf',C=1000,gamma=0.001)
+clf = clf.fit(x_train_pca, y_train)
+
+## Step 6: Perform testing and get classification report
+print("Predicting people's names on the test set")
+t0 = time()
+Xtest_pca = pca.transform(x_test)
+y_pred = clf.predict(Xtest_pca)
+print("done in %0.3fs" % (time() - t0))
+print(classification_report(y_test, y_pred))
